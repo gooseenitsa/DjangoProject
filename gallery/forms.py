@@ -6,7 +6,6 @@ from .models import Artwork, Profile
 
 
 class RegisterForm(UserCreationForm):
-    """Форма регистрации на основе стандартной формы Django."""
 
     email = forms.EmailField(label='Email', required=False)
 
@@ -16,7 +15,6 @@ class RegisterForm(UserCreationForm):
 
 
 class ArtworkForm(forms.ModelForm):
-    """Форма публикации новой работы."""
 
     class Meta:
         model = Artwork
@@ -27,7 +25,6 @@ class ArtworkForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
-    """Форма редактирования личного кабинета."""
 
     class Meta:
         model = Profile

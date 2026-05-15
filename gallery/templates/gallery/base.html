@@ -166,11 +166,7 @@
               <a class="nav-link" href="{% url 'home' %}">Галерея</a>
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'create_artwork' %}"
-                >Загрузить</a
-              >
-            </li>
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'dashboard' %}">Кабинет</a>
             </li>
