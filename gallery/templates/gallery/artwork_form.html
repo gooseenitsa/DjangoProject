@@ -1,0 +1,20 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Загрузка проекта - ArtHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="app-card p-4">
+      <span class="pill mb-3">New project</span>
+      <h1 class="h2 mb-4">Загрузить проект</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-accent" type="submit">Опубликовать</button>
+        <a class="btn btn-outline-light ms-2" href="{% url 'home' %}">Отмена</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

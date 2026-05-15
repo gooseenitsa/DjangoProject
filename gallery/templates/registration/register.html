@@ -1,0 +1,22 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}Регистрация - ArtHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="app-card p-4">
+      <span class="pill mb-3">Create account</span>
+      <h1 class="h2 mb-4">Регистрация</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-accent w-100" type="submit">Создать аккаунт</button>
+      </form>
+      <p class="text-muted small mt-3 mb-0">
+        Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

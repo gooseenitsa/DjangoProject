@@ -1,0 +1,55 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %}{{ profile_user.username }} - ArtHub{% endblock %}
+
+{% block content %}
+<section class="app-card p-4 mb-4">
+  <div class="d-flex align-items-center gap-4 flex-wrap">
+    {% if artist_profile.avatar %}
+    <img class="avatar" src="{{ artist_profile.avatar.url }}" alt="{{ profile_user.username }}" />
+    {% else %}
+    <div class="avatar d-flex align-items-center justify-content-center fs-3 fw-bold">
+      {{ profile_user.username|first|upper }}
+    </div>
+    {% endif %}
+
+    <div class="flex-grow-1">
+      <h1 class="h2 mb-1">{{ artist_profile.display_name|default:profile_user.username }}</h1>
+      <p class="text-muted mb-2">@{{ profile_user.username }}</p>
+      {% if artist_profile.location %}
+      <span class="pill mb-2">{{ artist_profile.location }}</span>
+      {% endif %}
+      <p class="mb-0 text-muted">{{ artist_profile.bio|default:"Автор пока не заполнил описание." }}</p>
+    </div>
+  </div>
+</section>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0">Работы автора</h2>
+  <span class="pill">{{ artworks|length }} шт.</span>
+</div>
+
+<div class="row g-4">
+  {% for artwork in artworks %}
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <article class="app-card art-card h-100">
+      <a href="{% url 'artwork_detail' artwork.id %}">
+        {% if artwork.image %}
+        <img class="art-thumb" src="{{ artwork.image.url }}" alt="{{ artwork.title }}" />
+        {% else %}
+        <div class="art-thumb art-placeholder">Project</div>
+        {% endif %}
+      </a>
+      <div class="p-3">
+        <h5>{{ artwork.title }}</h5>
+        <span class="text-muted small">{{ artwork.created_at|date:"d.m.Y" }}</span>
+      </div>
+    </article>
+  </div>
+  {% empty %}
+  <div class="col-12">
+    <div class="app-card p-5 text-center text-muted">У автора пока нет опубликованных работ.</div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
