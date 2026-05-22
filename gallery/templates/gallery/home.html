@@ -3,6 +3,49 @@
 {% block title %}ArtHub - галерея{% endblock %}
 
 {% block content %}
+<form class="app-card p-3 mb-4" method="get">
+  <div class="row g-3 align-items-end">
+    <div class="col-lg-4">
+      <label class="form-label text-muted">Поиск</label>
+      <input
+        class="form-control"
+        type="text"
+        name="q"
+        value="{{ query }}"
+        placeholder="Название, описание или автор"
+      />
+    </div>
+    <div class="col-lg-3">
+      <label class="form-label text-muted">Категория</label>
+      <select class="form-select" name="category">
+        <option value="">Все категории</option>
+        {% for category in categories %}
+        <option
+          value="{{ category.id }}"
+          {% if selected_category == category.id|stringformat:'s' %}selected{% endif %}
+        >
+          {{ category.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-lg-3">
+      <label class="form-label text-muted">Сортировка</label>
+      <select class="form-select" name="sort">
+        <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Сначала новые</option>
+        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Сначала старые</option>
+        <option value="title_asc" {% if sort == 'title_asc' %}selected{% endif %}>По названию (А–Я)</option>
+        <option value="title_desc" {% if sort == 'title_desc' %}selected{% endif %}>По названию (Я–А)</option>
+        <option value="popular" {% if sort == 'popular' %}selected{% endif %}>По популярности (лайки)</option>
+      </select>
+    </div>
+    <div class="col-lg-2 d-flex gap-2">
+      <button class="btn btn-accent flex-grow-1" type="submit">Применить</button>
+      <a class="btn btn-outline-light" href="{% url 'home' %}">Сброс</a>
+    </div>
+  </div>
+</form>
+
 <div class="row g-4">
   {% for artwork in artworks %}
   <div class="col-sm-6 col-lg-4 col-xl-3">
@@ -18,12 +61,32 @@
         <a class="text-decoration-none" href="{% url 'artwork_detail' artwork.id %}">
           <h5 class="mb-1">{{ artwork.title }}</h5>
         </a>
-        <a class="text-muted small text-decoration-none" href="{% url 'profile_detail' artwork.author.username %}">
+        <a
+          class="text-muted small text-decoration-none"
+          href="{% url 'profile_detail' artwork.author.username %}"
+        >
           {{ artwork.author.username }}
         </a>
         <div class="d-flex justify-content-between align-items-center mt-3">
-          <span class="pill">{% if artwork.category %}{{ artwork.category.name }}{% else %}Без категории{% endif %}</span>
+          <span class="pill"
+            >{% if artwork.category %}{{ artwork.category.name }}{% else %}Без категории{% endif %}</span
+          >
           <span class="text-muted small">{{ artwork.created_at|date:"d.m.Y" }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-2 gap-2">
+          <span class="text-muted small">♥ {{ artwork.like_count }} · 💬 {{ artwork.comment_count }}</span>
+          {% if user.is_authenticated %}
+          <form method="post" action="{% url 'toggle_like' artwork.id %}" class="m-0">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+            <button
+              type="submit"
+              class="btn btn-sm {% if artwork.user_liked %}btn-accent{% else %}btn-outline-light{% endif %}"
+            >
+              {% if artwork.user_liked %}Лайкнул{% else %}Лайк{% endif %}
+            </button>
+          </form>
+          {% endif %}
         </div>
       </div>
     </article>
@@ -31,8 +94,8 @@
   {% empty %}
   <div class="col-12">
     <div class="app-card p-5 text-center">
-      <h4>Работ пока нет</h4>
-      <p class="text-muted mb-0">Создай аккаунт, добавь категорию и загрузи первую работу.</p>
+      <h4>Ничего не найдено</h4>
+      <p class="text-muted mb-0">Измени фильтры или сбрось поиск.</p>
     </div>
   </div>
   {% endfor %}

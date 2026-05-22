@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Artwork, Profile
+from .models import Artwork, Comment, Profile
 
 
 class RegisterForm(UserCreationForm):
@@ -31,4 +31,17 @@ class ProfileForm(forms.ModelForm):
         fields = ('display_name', 'bio', 'avatar', 'location')
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 4}),
+        }
+
+
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ('text',)
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Напишите комментарий...'}),
+        }
+        labels = {
+            'text': '',
         }
