@@ -86,15 +86,11 @@ USE_I18N = True
 USE_TZ = True
 
 
-# STATIC_URL нужен для css/js проекта.
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# MEDIA_URL и MEDIA_ROOT нужны для картинок, которые пользователи загружают
-# через форму публикации работы.
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# После входа и выхода пользователь возвращается на главную страницу.
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'

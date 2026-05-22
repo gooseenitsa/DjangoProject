@@ -1,3 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+media/
+.env
+*.psd
+.idea/
+.vscode/
 __pycache__/
 *.py[cod]
 *$py.class
